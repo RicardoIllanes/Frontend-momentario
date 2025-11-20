@@ -18,7 +18,12 @@ const HeroSection = () => {
                     Explora nuestra selección premium de vehículos. Calidad, garantía y el mejor servicio post-venta del mercado.
                 </p>
                 <div className="flex justify-center gap-4">
-                    <button className="px-8 py-4 bg-white text-black rounded-full font-bold hover:bg-zinc-200 transition-colors">
+                    <button
+                        onClick={() => {
+                            document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="px-8 py-4 bg-white text-black rounded-full font-bold hover:bg-zinc-200 transition-colors"
+                    >
                         Ver Catálogo
                     </button>
                     <button className="px-8 py-4 border border-white/20 bg-white/10 backdrop-blur-sm rounded-full font-bold hover:bg-white/20 transition-colors">

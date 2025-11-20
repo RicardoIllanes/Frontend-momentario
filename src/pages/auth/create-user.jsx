@@ -5,7 +5,7 @@ import { generarMensaje } from '../../utils/GenerarMensaje';
 import UserService from '../../services/UserService';
 
 const CreateUser = () => {
-    const [form, setForm] = useState({ nombre:"" ,correo: "", contrasena: "" });
+    const [form, setForm] = useState({ nombre: "", correo: "", contrasena: "" });
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -55,7 +55,7 @@ const CreateUser = () => {
                 {
                     content: "Crear usuario",
                     variant: "h1",
-                    className: "text-center text-4xl font-medium mb-10 text-white",
+                    className: "text-center text-4xl font-bold mb-10 text-zinc-900 dark:text-white tracking-tight",
                 }
             ]
         },
@@ -70,7 +70,7 @@ const CreateUser = () => {
                     onChange: handleChange,
                     required: true,
                     autoComplete: "off",
-                    className: "w-full border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500 mb-4",
+                    className: "w-full border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent text-lg py-2 outline-none focus:border-black dark:focus:border-white transition-colors text-zinc-900 dark:text-white placeholder-zinc-400 mb-4",
                 },
                 {
                     type: "email",
@@ -80,7 +80,7 @@ const CreateUser = () => {
                     onChange: handleChange,
                     required: true,
                     autoComplete: "off",
-                    className: "w-full border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500 mb-4",
+                    className: "w-full border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent text-lg py-2 outline-none focus:border-black dark:focus:border-white transition-colors text-zinc-900 dark:text-white placeholder-zinc-400 mb-4",
                 },
                 {
                     type: "password",
@@ -90,38 +90,38 @@ const CreateUser = () => {
                     onChange: handleChange,
                     required: true,
                     autoComplete: "current-password",
-                    className: "w-full border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500",
+                    className: "w-full border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent text-lg py-2 outline-none focus:border-black dark:focus:border-white transition-colors text-zinc-900 dark:text-white placeholder-zinc-400",
                 },
             ],
             className: "space-y-8"
         },
-        {           
+        {
             type: "button",
             text: "Crear usuario",
-            className: "transform w-full mt-4 mb-4 rounded-sm bg-indigo-600 py-2 font-bold duration-300 hover:bg-indigo-400"
+            className: "w-full mt-8 mb-4 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
         },
         {
-      type: "text",
-      text: [
-        {
-          content: (
-            <Link
-              to="/login"
-              className="text-indigo-400 hover:text-indigo-300 underline transition"
-            >
-              Ya tengo un usuario
-            </Link>
-          ),
-          variant: "p",
-          className: "text-center text-lg",
+            type: "text",
+            text: [
+                {
+                    content: (
+                        <Link
+                            to="/login"
+                            className="text-zinc-500 hover:text-black dark:hover:text-white underline transition-colors"
+                        >
+                            Ya tengo un usuario
+                        </Link>
+                    ),
+                    variant: "p",
+                    className: "text-center text-sm mt-4",
+                },
+            ],
         },
-      ],
-    },
     ];
     return (
         <>
-            <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-orange-800 p-4">
-                <form onSubmit={handleSubmit} className="w-full max-w-md space-y-10 rounded-2xl bg-white/10 p-10 backdrop-blur-xl shadow-2xl">
+            <main className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black p-4">
+                <form onSubmit={handleSubmit} className="w-full max-w-md space-y-10 rounded-2xl bg-white dark:bg-zinc-900 p-10 shadow-xl border border-zinc-200 dark:border-zinc-800">
                     <Forms content={Login} />
                 </form>
             </main>

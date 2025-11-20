@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Forms from '../../components/templates/Forms';
 import { generarMensaje } from '../../utils/GenerarMensaje';
-import UserService from '../../services/UserService';
+import UsuarioService from '../../services/UsuarioService';
 import { useAuth } from '../../context/AuthContext';
 import loginData from './data/loginData';
 
@@ -26,7 +26,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await UserService.login(form);
+            const response = await UsuarioService.login(form);
             const usuario = response.data; // YA ES EL USUARIO COMPLETO
 
             // GUARDA SOLO user (SIN token)
@@ -109,8 +109,8 @@ const Login = () => {
     });
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-orange-800 p-4">
-            <form onSubmit={handleSubmit} className="w-full max-w-md space-y-10 rounded-2xl bg-white/10 p-10 backdrop-blur-xl shadow-2xl">
+        <main className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black p-4">
+            <form onSubmit={handleSubmit} className="w-full max-w-md space-y-10 rounded-2xl bg-white dark:bg-zinc-900 p-10 shadow-xl border border-zinc-200 dark:border-zinc-800">
                 <Forms content={formDataWithHandlers} />
             </form>
         </main>

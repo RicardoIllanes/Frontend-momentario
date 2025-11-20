@@ -1,5 +1,6 @@
 export const publicLinks = [
   { to: "/", label: "Inicio" },
+  { to: "/login", label: "Iniciar Sesión" },
   { to: "/admin/dashboard", label: "Admin" }, // Temporal shortcut for easy access
 ];
 

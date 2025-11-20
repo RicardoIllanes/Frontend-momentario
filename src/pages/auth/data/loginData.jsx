@@ -5,7 +5,7 @@ const loginData = [
             {
                 content: "Inicio de Sesión",
                 variant: "h1",
-                className: "text-center text-4xl font-medium mb-10 text-white",
+                className: "text-center text-4xl font-bold mb-10 text-zinc-900 dark:text-white tracking-tight",
             }
         ]
     },
@@ -18,7 +18,7 @@ const loginData = [
                 name: "correo",
                 required: true,
                 autoComplete: "off",
-                className: "w-full border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500 mb-4",
+                className: "w-full border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent text-lg py-2 outline-none focus:border-black dark:focus:border-white transition-colors text-zinc-900 dark:text-white placeholder-zinc-400",
             },
             {
                 type: "password",
@@ -26,15 +26,15 @@ const loginData = [
                 name: "contrasena",
                 required: true,
                 autoComplete: "current-password",
-                className: "w-full border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500",
+                className: "w-full border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent text-lg py-2 outline-none focus:border-black dark:focus:border-white transition-colors text-zinc-900 dark:text-white placeholder-zinc-400",
             },
         ],
         className: "space-y-8"
     },
-    {           
+    {
         type: "button",
         text: "Iniciar Sesión",
-        className: "transform w-full mt-4 mb-4 rounded-sm py-2 font-bold duration-300 bg-indigo-600 hover:bg-indigo-400",
+        className: "w-full mt-8 mb-4 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors",
     },
     {
         type: "text",
@@ -43,14 +43,14 @@ const loginData = [
                 content: (
                     <button
                         type="button"
-                        onClick={() => window.location.href = '/create-user'} 
-                        className="text-indigo-400 hover:text-indigo-300 underline transition"
+                        onClick={() => window.location.href = '/create-user'}
+                        className="text-zinc-500 hover:text-black dark:hover:text-white underline transition-colors"
                     >
                         Crear usuario
                     </button>
                 ),
                 variant: "p",
-                className: "text-center text-lg",
+                className: "text-center text-sm mt-4",
             },
         ],
     },

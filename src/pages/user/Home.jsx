@@ -36,7 +36,7 @@ const Home = () => {
         <div className="min-h-screen bg-zinc-50 dark:bg-black">
             <HeroSection />
 
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <main id="catalogo" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="flex justify-between items-end mb-12">
                     <div>
                         <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">Catálogo Disponible</h2>
