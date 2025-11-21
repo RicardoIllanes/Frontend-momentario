@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import VehiculosService from "../../services/VehiculosService";
 import { useAuth } from '../../context/AuthContext';
-import ReservaModal from '../../components/ReservaModal';
+import ReservaModal from '../../components/organisms/ReservaModal';
 
 function VehiculoDetalle() {
     const { id } = useParams();

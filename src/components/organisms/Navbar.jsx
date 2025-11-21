@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import Text from '../atoms/Text';
+import Button from '../atoms/Button';
 
 function Navbar({ links, title }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -29,9 +31,9 @@ function Navbar({ links, title }) {
 				<div className="flex justify-between items-center h-16">
 
 					<div className="flex-shrink-0">
-						<h1 className="text-2xl font-bold tracking-wider text-white-600">
+						<Text variant="h1" className="text-2xl font-bold tracking-wider text-white-600">
 							Automotora
-						</h1>
+						</Text>
 					</div>
 
 					<div className="hidden md:flex space-x-8">
@@ -51,9 +53,9 @@ function Navbar({ links, title }) {
 					</div>
 
 					<div className="md:hidden">
-						<button
+						<Button
 							onClick={() => setIsOpen(!isOpen)}
-							className="text-gray-300 hover:text-red-500 focus:outline-none transition-colors"
+							className="text-gray-300 hover:text-red-500 focus:outline-none transition-colors bg-transparent p-0"
 							aria-label="Toggle menu"
 						>
 							{isOpen ? (
@@ -65,7 +67,7 @@ function Navbar({ links, title }) {
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
 								</svg>
 							)}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>

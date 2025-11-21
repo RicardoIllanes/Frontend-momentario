@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import ReservasService from '../../services/ReservasService';
-import ReservaCard from '../../components/ReservaCard';
+import ReservaCard from '../../components/molecules/ReservaCard';
 
 const MisReservas = () => {
     const navigate = useNavigate();

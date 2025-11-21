@@ -1,13 +1,13 @@
-// src/components/molecules/DynamicTable.jsx
 import React from 'react';
 import Image from '../atoms/Image';
 import Button from '../atoms/Button';
+import Text from '../atoms/Text';
 
 function DynamicTable({ columns = [], data = [], className = '', striped = true, hover = true, emptyMessage = 'No hay datos disponibles', }) {
     if (!data || data.length === 0) {
         return (
             <div className="text-center py-8 text-gray-500">
-                {emptyMessage}
+                <Text variant="p">{emptyMessage}</Text>
             </div>
         );
     }
@@ -26,7 +26,7 @@ function DynamicTable({ columns = [], data = [], className = '', striped = true,
                     <tr className="bg-gray-100 border-b">
                         {columns.map((header, index) => (
                             <th key={index} className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider" >
-                                {header}
+                                <Text variant="span">{header}</Text>
                             </th>
                         ))}
                     </tr>
@@ -75,9 +75,9 @@ function DynamicTable({ columns = [], data = [], className = '', striped = true,
                                                     }}
                                                 />
                                             ) : null}
-                                            <span className={shouldShowImage ? 'hidden' : ''}>
+                                            <Text variant="span" className={shouldShowImage ? 'hidden' : ''}>
                                                 {cell}
-                                            </span>
+                                            </Text>
                                         </td>
                                     );
                                 })}

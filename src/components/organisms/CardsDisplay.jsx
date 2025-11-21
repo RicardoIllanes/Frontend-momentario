@@ -24,7 +24,7 @@ function CardsDisplay({ content = [], className = "p-4", isCardList = false }) {
             {item.card.map((element, idx) => {
               if (element.type === "image") {
                 return (
-                  <img
+                  <Image
                     key={idx}
                     src={element.src}
                     alt={element.alt}

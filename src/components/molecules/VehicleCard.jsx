@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Image from '../atoms/Image';
+import Text from '../atoms/Text';
 
 const VehicleCard = ({ vehicle }) => {
     return (
         <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-zinc-200">
             <div className="aspect-[16/9] overflow-hidden">
-                <img
+                <Image
                     src={vehicle.imagenUrl}
                     alt={`${vehicle.marca.nombre} ${vehicle.modelo}`}
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
@@ -14,16 +16,16 @@ const VehicleCard = ({ vehicle }) => {
             <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                     <div>
-                        <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider">
+                        <Text variant="p" className="text-sm font-medium text-zinc-500 uppercase tracking-wider">
                             {vehicle.marca.nombre}
-                        </p>
-                        <h3 className="text-xl font-bold text-zinc-900 mt-1">
+                        </Text>
+                        <Text variant="h3" className="text-xl font-bold text-zinc-900 mt-1">
                             {vehicle.modelo}
-                        </h3>
+                        </Text>
                     </div>
-                    <span className="px-3 py-1 bg-zinc-100 rounded-full text-xs font-semibold text-zinc-900">
+                    <Text variant="span" className="px-3 py-1 bg-zinc-100 rounded-full text-xs font-semibold text-zinc-900">
                         {vehicle.anio}
-                    </span>
+                    </Text>
                 </div>
 
                 <div className="flex items-center gap-4 text-sm text-zinc-600 mb-6">

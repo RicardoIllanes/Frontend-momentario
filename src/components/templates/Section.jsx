@@ -1,6 +1,7 @@
 import React from "react";
 import DynamicTexts from "../molecules/DynamicTexts";
 import Image from "../atoms/Image";
+import Text from "../atoms/Text";
 import CardsDisplay from "../organisms/CardsDisplay";
 import DynamicTable from "../molecules/DynamicTable";
 
@@ -33,9 +34,9 @@ function Section({ content = [], className = "p-4" }) {
           return (
             <div key={index} className={item.className || "my-6"}>
               {item.title && (
-                <h3 className="text-xl font-bold mb-3 text-gray-800">
+                <Text variant="h3" className="text-xl font-bold mb-3 text-gray-800">
                   {item.title}
-                </h3>
+                </Text>
               )}
               <DynamicTable columns={item.columns} data={item.data} striped hover />
             </div>

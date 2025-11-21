@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import VehiculosService from '../../services/VehiculosService';
-import VehicleCard from '../../components/VehicleCard';
-import HeroSection from '../../components/HeroSection';
+import VehicleCard from '../../components/molecules/VehicleCard';
+import HeroSection from '../../components/organisms/HeroSection';
 
 const Home = () => {
     const [vehiculos, setVehiculos] = useState([]);
