@@ -5,6 +5,7 @@ export const adminLinks = [
   { to: "/admin/concesionarios", label: "Concesionarios" },
   { to: "/admin/usuarios", label: "Usuarios" },
   { to: "/admin/reservas", label: "Reservas" },
+  { to: "/mi-perfil", label: "Mi Perfil" },
   { to: "/", label: "Ver Sitio Público" },
 ];
 
