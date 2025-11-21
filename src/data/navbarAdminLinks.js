@@ -3,6 +3,7 @@ export const adminLinks = [
   { to: "/admin/vehiculos", label: "Vehículos" },
   { to: "/admin/marcas", label: "Marcas" },
   { to: "/admin/concesionarios", label: "Concesionarios" },
+  { to: "/admin/usuarios", label: "Usuarios" },
   { to: "/", label: "Ver Sitio Público" },
 ];
 

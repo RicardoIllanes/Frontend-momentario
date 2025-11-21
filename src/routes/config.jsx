@@ -10,6 +10,7 @@ const HomeAdmin = lazy(() => import('../pages/admin/HomeAdmin'));
 const VehiculosList = lazy(() => import('../pages/admin/Vehiculos/VehiculosList'));
 const MarcasList = lazy(() => import('../pages/admin/Marcas/MarcasList'));
 const ConcesionariosList = lazy(() => import('../pages/admin/Concesionarios/ConcesionariosList'));
+const UsuariosList = lazy(() => import('../pages/admin/Usuarios/UsuariosList'));
 
 const VehiculoDetalle = lazy(() => import('../pages/user/VehiculoDetalle'));
 
@@ -27,6 +28,7 @@ const adminRoutes = [
   { path: '/admin/vehiculos', element: <VehiculosList />, isAdmin: true },
   { path: '/admin/marcas', element: <MarcasList />, isAdmin: true },
   { path: '/admin/concesionarios', element: <ConcesionariosList />, isAdmin: true },
+  { path: '/admin/usuarios', element: <UsuariosList />, isAdmin: true },
 ];
 
 // Ruta 404 por ahora no hice una página específica, solo un div simple (por ahora (puede cambiar (o eso creo)))

@@ -33,6 +33,11 @@ const HomeAdmin = () => {
                         description="Gestionar sucursales y puntos de venta."
                         link="/admin/concesionarios"
                     />
+                    <DashboardCard
+                        title="Usuarios"
+                        description="Administrar usuarios y roles del sistema."
+                        link="/admin/usuarios"
+                    />
                 </div>
             </div>
         </div>
