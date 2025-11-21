@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import UsuarioService from '../../../services/UsuarioService';
+import RolesService from '../../../services/RolesService';
 import CreateModal from '../../../components/organisms/CreateModal';
+import { generarMensaje } from '../../../utils/GenerarMensaje';
 
 const createInputs = [
     { name: "nombre", type: "text", placeholder: "Nombre", required: true },
@@ -11,23 +13,49 @@ const createInputs = [
 
 const UsuariosList = () => {
     const [usuarios, setUsuarios] = useState([]);
+    const [roles, setRoles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [editingUsuario, setEditingUsuario] = useState(null);
 
     useEffect(() => {
-        loadUsuarios();
+        loadData();
     }, []);
 
-    const loadUsuarios = async () => {
+    const loadData = async () => {
         try {
-            const data = await UsuarioService.getAllUsuarios();
-            setUsuarios(data);
+            const [usuariosData, rolesData] = await Promise.all([
+                UsuarioService.getAllUsuarios(),
+                RolesService.getAllRoles()
+            ]);
+            setUsuarios(usuariosData);
+            setRoles(rolesData);
         } catch (error) {
-            console.error('Error loading usuarios:', error);
+            console.error('Error loading data:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleChangeRol = async (usuarioId, nuevoRolId) => {
+        try {
+            const usuario = usuarios.find(u => u.id === usuarioId);
+            if (!usuario) return;
+
+            const payload = {
+                nombre: usuario.nombre,
+                rut: usuario.rut,
+                correo: usuario.correo,
+                rol: { id: parseInt(nuevoRolId) }
+            };
+
+            await UsuarioService.updateUsuario(usuarioId, payload);
+            generarMensaje('Rol actualizado exitosamente', 'success');
+            loadData();
+        } catch (error) {
+            console.error('Error updating rol:', error);
+            generarMensaje('Error al actualizar el rol', 'error');
         }
     };
 
@@ -42,12 +70,13 @@ const UsuariosList = () => {
             };
 
             await UsuarioService.updateUsuario(editingUsuario.id, payload);
-            await loadUsuarios();
+            await loadData();
             setIsModalOpen(false);
             setEditingUsuario(null);
+            generarMensaje('Usuario actualizado exitosamente', 'success');
         } catch (error) {
             console.error('Error saving usuario:', error);
-            alert('Error al guardar el usuario');
+            generarMensaje('Error al guardar el usuario', 'error');
         } finally {
             setSubmitLoading(false);
         }
@@ -63,12 +92,24 @@ const UsuariosList = () => {
     };
 
     const handleDelete = async (id) => {
+        if (!window.confirm('¿Está seguro que desea eliminar este usuario?')) return;
+
         try {
             await UsuarioService.deleteUsuario(id);
-            loadUsuarios();
+            generarMensaje('Usuario eliminado exitosamente', 'success');
+            loadData();
         } catch (error) {
             console.error('Error deleting usuario:', error);
+            generarMensaje('Error al eliminar el usuario', 'error');
         }
+    };
+
+    const getRoleBadgeColor = (rolNombre) => {
+        const rolLower = rolNombre?.toLowerCase() || '';
+        if (rolLower === 'admin') return 'bg-purple-100 text-purple-800';
+        if (rolLower === 'vendedor') return 'bg-blue-100 text-blue-800';
+        if (rolLower === 'cliente') return 'bg-zinc-100 text-zinc-800';
+        return 'bg-zinc-100 text-zinc-800';
     };
 
     if (loading) return <div className="p-8 text-center">Cargando...</div>;
@@ -98,7 +139,19 @@ const UsuariosList = () => {
                                 <td className="p-4 font-medium text-gray-900">{usuario.nombre}</td>
                                 <td className="p-4 text-gray-600">{usuario.rut}</td>
                                 <td className="p-4 text-gray-600">{usuario.correo}</td>
-                                <td className="p-4 text-gray-600">{usuario.rol?.nombre || usuario.rol}</td>
+                                <td className="p-4">
+                                    <select
+                                        value={usuario.rol?.id || ''}
+                                        onChange={(e) => handleChangeRol(usuario.id, e.target.value)}
+                                        className={`px-3 py-1 rounded-full text-xs font-semibold border-0 ${getRoleBadgeColor(usuario.rol?.nombre)}`}
+                                    >
+                                        {roles.map(rol => (
+                                            <option key={rol.id} value={rol.id}>
+                                                {rol.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </td>
                                 <td className="p-4">
                                     <div className="flex gap-2">
                                         <button
