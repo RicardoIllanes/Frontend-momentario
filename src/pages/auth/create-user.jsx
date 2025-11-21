@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Forms from '../../components/templates/Forms';
 import { generarMensaje } from '../../utils/GenerarMensaje';
-import UserService from '../../services/UserService';
+import UsuarioService from '../../services/UsuarioService';
 
 const CreateUser = () => {
-    const [form, setForm] = useState({ nombre: "", correo: "", contrasena: "" });
+    const [form, setForm] = useState({ nombre: "", rut: "", correo: "", contrasena: "" });
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,7 +15,7 @@ const CreateUser = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.correo || !form.contrasena) {
+        if (!form.nombre || !form.rut || !form.correo || !form.contrasena) {
             generarMensaje('Completa todos los campos', 'warning');
             return;
         }
@@ -24,23 +25,23 @@ const CreateUser = () => {
         try {
             const usuario = {
                 "nombre": form.nombre,
+                "rut": form.rut,
                 "correo": form.correo,
                 "contrasena": form.contrasena,
-                rol: {
+                "rol": {
                     "id": 3
                 }
             }
-            const response = await UserService.createUser(usuario);
+            await UsuarioService.createUsuario(usuario);
 
-            generarMensaje('usuario creado!', 'success');
+            generarMensaje('Usuario creado exitosamente!', 'success');
 
-            // Redirigir al dashboard
-            /*setTimeout(() => {
-                navigate('/dashboard');
-            }, 800);*/
+            setTimeout(() => {
+                navigate('/login');
+            }, 1500);
 
         } catch (error) {
-            // ERRORES
+            console.error(error);
             const msg = error.response?.data?.message || 'Error al crear usuario';
             generarMensaje(msg, 'error');
         } finally {
@@ -64,9 +65,19 @@ const CreateUser = () => {
             inputs: [
                 {
                     type: "text",
-                    placeholder: "Nombre usuario",
+                    placeholder: "Nombre",
                     name: "nombre",
                     value: form.nombre,
+                    onChange: handleChange,
+                    required: true,
+                    autoComplete: "off",
+                    className: "w-full border-b-2 border-zinc-300 dark:border-zinc-700 bg-transparent text-lg py-2 outline-none focus:border-black dark:focus:border-white transition-colors text-zinc-900 dark:text-white placeholder-zinc-400 mb-4",
+                },
+                {
+                    type: "text",
+                    placeholder: "RUT",
+                    name: "rut",
+                    value: form.rut,
                     onChange: handleChange,
                     required: true,
                     autoComplete: "off",
@@ -97,8 +108,9 @@ const CreateUser = () => {
         },
         {
             type: "button",
-            text: "Crear usuario",
-            className: "w-full mt-8 mb-4 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
+            text: loading ? "Creando..." : "Crear usuario",
+            disabled: loading,
+            className: "w-full mt-8 mb-4 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         },
         {
             type: "text",
