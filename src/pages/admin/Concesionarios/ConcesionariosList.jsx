@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import ConcesionariosService from '../../../services/ConcesionariosService';
+import CreateModal from '../../../components/organisms/CreateModal';
+
+const createInputs = [
+    { name: "nombre", type: "text", placeholder: "Nombre", required: true },
+    { name: "direccion", type: "text", placeholder: "Dirección", required: true },
+    { name: "telefono", type: "text", placeholder: "Teléfono", required: true },
+    { name: "correo", type: "email", placeholder: "Correo", required: true },
+    { name: "comunaId", type: "text", placeholder: "ID Comuna", required: true },
+];
 
 const ConcesionariosList = () => {
     const [concesionarios, setConcesionarios] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [editingConcesionario, setEditingConcesionario] = useState(null);
 
     useEffect(() => {
         loadConcesionarios();
@@ -20,14 +32,48 @@ const ConcesionariosList = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('¿Está seguro de eliminar este concesionario?')) {
-            try {
-                await ConcesionariosService.deleteConcesionario(id);
-                loadConcesionarios();
-            } catch (error) {
-                console.error('Error deleting concesionario:', error);
+    const handleCreate = async (formData) => {
+        setSubmitLoading(true);
+        try {
+            const payload = {
+                nombre: formData.nombre,
+                direccion: formData.direccion,
+                telefono: formData.telefono,
+                correo: formData.correo,
+                comuna: { id: parseInt(formData.comunaId) }
+            };
+
+            if (editingConcesionario) {
+                await ConcesionariosService.updateConcesionario(editingConcesionario.id, payload);
+            } else {
+                await ConcesionariosService.createConcesionario(payload);
             }
+
+            await loadConcesionarios();
+            setIsModalOpen(false);
+            setEditingConcesionario(null);
+        } catch (error) {
+            console.error('Error saving concesionario:', error);
+            alert('Error al guardar el concesionario');
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
+    const handleOpenEdit = (concesionario) => {
+        setEditingConcesionario({
+            ...concesionario,
+            comunaId: concesionario.comuna?.id
+        });
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await ConcesionariosService.deleteConcesionario(id);
+            loadConcesionarios();
+        } catch (error) {
+            console.error('Error deleting concesionario:', error);
         }
     };
 
@@ -37,7 +83,13 @@ const ConcesionariosList = () => {
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Gestión de Concesionarios</h2>
-                <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+                <button
+                    onClick={() => {
+                        setEditingConcesionario(null);
+                        setIsModalOpen(true);
+                    }}
+                    className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
                     Nuevo Concesionario
                 </button>
             </div>
@@ -62,7 +114,10 @@ const ConcesionariosList = () => {
                                 <td className="p-4 text-gray-600">{c.comuna?.nombre}</td>
                                 <td className="p-4">
                                     <div className="flex gap-2">
-                                        <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        <button
+                                            onClick={() => handleOpenEdit(c)}
+                                            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                        >
                                             Editar
                                         </button>
                                         <button
@@ -78,6 +133,20 @@ const ConcesionariosList = () => {
                     </tbody>
                 </table>
             </div>
+
+            <CreateModal
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setEditingConcesionario(null);
+                }}
+                onSubmit={handleCreate}
+                inputsConfig={createInputs}
+                title={editingConcesionario ? "Editar Concesionario" : "Crear Nuevo Concesionario"}
+                submitText={editingConcesionario ? "Actualizar" : "Crear"}
+                loading={submitLoading}
+                initialData={editingConcesionario || {}}
+            />
         </div>
     );
 };

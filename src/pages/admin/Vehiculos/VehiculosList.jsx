@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import VehiculosService from '../../../services/VehiculosService';
+import CreateModal from '../../../components/organisms/CreateModal';
+
+const createInputs = [
+    { name: "modelo", type: "text", placeholder: "Modelo", required: true },
+    { name: "anio", type: "number", placeholder: "Año", required: true },
+    { name: "precio", type: "number", placeholder: "Precio", required: true },
+    { name: "marcaId", type: "text", placeholder: "ID Marca", required: true },
+    { name: "transmisionId", type: "text", placeholder: "ID Transmisión", required: true },
+    { name: "combustibleId", type: "text", placeholder: "ID Combustible", required: true },
+    { name: "concesionarioId", type: "text", placeholder: "ID Concesionario", required: true },
+];
 
 const VehiculosList = () => {
     const [vehiculos, setVehiculos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [editingVehiculo, setEditingVehiculo] = useState(null);
 
     useEffect(() => {
         loadVehiculos();
@@ -20,14 +34,55 @@ const VehiculosList = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('¿Está seguro de eliminar este vehículo?')) {
-            try {
-                await VehiculosService.deleteVehiculo(id);
-                loadVehiculos();
-            } catch (error) {
-                console.error('Error deleting vehiculo:', error);
+    const handleCreate = async (formData) => {
+        setSubmitLoading(true);
+        console.log('FormData received:', formData);
+        try {
+            const payload = {
+                modelo: formData.modelo,
+                anio: parseInt(formData.anio),
+                precio: parseInt(formData.precio),
+                marca: { id: parseInt(formData.marcaId) },
+                transmision: { id: parseInt(formData.transmisionId) },
+                combustible: { id: parseInt(formData.combustibleId) },
+                concesionario: { id: parseInt(formData.concesionarioId) }
+            };
+            console.log('Payload to send:', payload);
+
+            if (editingVehiculo) {
+                await VehiculosService.updateVehiculo(editingVehiculo.id, payload);
+            } else {
+                await VehiculosService.createVehiculo(payload);
             }
+
+            await loadVehiculos();
+            setIsModalOpen(false);
+            setEditingVehiculo(null);
+        } catch (error) {
+            console.error('Error saving vehiculo:', error);
+            alert('Error al guardar el vehículo');
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
+    const handleOpenEdit = (vehiculo) => {
+        setEditingVehiculo({
+            ...vehiculo,
+            marcaId: vehiculo.marca?.id,
+            transmisionId: vehiculo.transmision?.id,
+            combustibleId: vehiculo.combustible?.id,
+            concesionarioId: vehiculo.concesionario?.id
+        });
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await VehiculosService.deleteVehiculo(id);
+            loadVehiculos();
+        } catch (error) {
+            console.error('Error deleting vehiculo:', error);
         }
     };
 
@@ -37,7 +92,13 @@ const VehiculosList = () => {
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Gestión de Vehículos</h2>
-                <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+                <button
+                    onClick={() => {
+                        setEditingVehiculo(null);
+                        setIsModalOpen(true);
+                    }}
+                    className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
                     Nuevo Vehículo
                 </button>
             </div>
@@ -64,7 +125,10 @@ const VehiculosList = () => {
                                 <td className="p-4 text-gray-600">${vehiculo.precio.toLocaleString()}</td>
                                 <td className="p-4">
                                     <div className="flex gap-2">
-                                        <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        <button
+                                            onClick={() => handleOpenEdit(vehiculo)}
+                                            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                        >
                                             Editar
                                         </button>
                                         <button
@@ -80,6 +144,20 @@ const VehiculosList = () => {
                     </tbody>
                 </table>
             </div>
+
+            <CreateModal
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setEditingVehiculo(null);
+                }}
+                onSubmit={handleCreate}
+                inputsConfig={createInputs}
+                title={editingVehiculo ? "Editar Vehículo" : "Crear Nuevo Vehículo"}
+                submitText={editingVehiculo ? "Actualizar" : "Crear"}
+                loading={submitLoading}
+                initialData={editingVehiculo || {}}
+            />
         </div>
     );
 };

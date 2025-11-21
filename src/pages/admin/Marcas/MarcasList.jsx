@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import MarcasService from '../../../services/MarcasService';
+import CreateModal from '../../../components/organisms/CreateModal';
+
+const createInputs = [
+    { name: "nombre", type: "text", placeholder: "Nombre de la Marca", required: true },
+];
 
 const MarcasList = () => {
     const [marcas, setMarcas] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [editingMarca, setEditingMarca] = useState(null);
 
     useEffect(() => {
         loadMarcas();
@@ -20,14 +28,36 @@ const MarcasList = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('¿Está seguro de eliminar esta marca?')) {
-            try {
-                await MarcasService.deleteMarca(id);
-                loadMarcas();
-            } catch (error) {
-                console.error('Error deleting marca:', error);
+    const handleCreate = async (formData) => {
+        setSubmitLoading(true);
+        try {
+            if (editingMarca) {
+                await MarcasService.updateMarca(editingMarca.id, formData);
+            } else {
+                await MarcasService.createMarca(formData);
             }
+            await loadMarcas();
+            setIsModalOpen(false);
+            setEditingMarca(null);
+        } catch (error) {
+            console.error('Error saving marca:', error);
+            alert('Error al guardar la marca');
+        } finally {
+            setSubmitLoading(false);
+        }
+    };
+
+    const handleOpenEdit = (marca) => {
+        setEditingMarca(marca);
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await MarcasService.deleteMarca(id);
+            loadMarcas();
+        } catch (error) {
+            console.error('Error deleting marca:', error);
         }
     };
 
@@ -37,7 +67,13 @@ const MarcasList = () => {
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Gestión de Marcas</h2>
-                <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+                <button
+                    onClick={() => {
+                        setEditingMarca(null);
+                        setIsModalOpen(true);
+                    }}
+                    className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+                >
                     Nueva Marca
                 </button>
             </div>
@@ -58,7 +94,10 @@ const MarcasList = () => {
                                 <td className="p-4 font-medium text-gray-900">{marca.nombre}</td>
                                 <td className="p-4">
                                     <div className="flex gap-2">
-                                        <button className="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        <button
+                                            onClick={() => handleOpenEdit(marca)}
+                                            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                        >
                                             Editar
                                         </button>
                                         <button
@@ -74,6 +113,20 @@ const MarcasList = () => {
                     </tbody>
                 </table>
             </div>
+
+            <CreateModal
+                isOpen={isModalOpen}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setEditingMarca(null);
+                }}
+                onSubmit={handleCreate}
+                inputsConfig={createInputs}
+                title={editingMarca ? "Editar Marca" : "Crear Nueva Marca"}
+                submitText={editingMarca ? "Actualizar" : "Crear"}
+                loading={submitLoading}
+                initialData={editingMarca || {}}
+            />
         </div>
     );
 };
