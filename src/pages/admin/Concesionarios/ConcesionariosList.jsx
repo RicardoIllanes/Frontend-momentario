@@ -97,43 +97,45 @@ const ConcesionariosList = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                <table className="w-full text-left">
-                    <thead className="bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">ID</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Nombre</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Dirección</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Comuna</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Acciones</Text></th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {concesionarios.map((c) => (
-                            <tr key={c.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="p-4 text-gray-500"><Text variant="span">#{c.id}</Text></td>
-                                <td className="p-4 font-medium text-gray-900"><Text variant="span">{c.nombre}</Text></td>
-                                <td className="p-4 text-gray-600"><Text variant="span">{c.direccion}</Text></td>
-                                <td className="p-4 text-gray-600"><Text variant="span">{c.comuna?.nombre}</Text></td>
-                                <td className="p-4">
-                                    <div className="flex gap-2">
-                                        <Button
-                                            onClick={() => handleOpenEdit(c)}
-                                            className="text-blue-600 hover:text-blue-800 font-medium text-sm bg-transparent p-0"
-                                        >
-                                            Editar
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleDelete(c.id)}
-                                            className="text-red-600 hover:text-red-800 font-medium text-sm bg-transparent p-0"
-                                        >
-                                            Eliminar
-                                        </Button>
-                                    </div>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">ID</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Nombre</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Dirección</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Comuna</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Acciones</Text></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {concesionarios.map((c) => (
+                                <tr key={c.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="p-4 text-gray-500"><Text variant="span">#{c.id}</Text></td>
+                                    <td className="p-4 font-medium text-gray-900"><Text variant="span">{c.nombre}</Text></td>
+                                    <td className="p-4 text-gray-600"><Text variant="span">{c.direccion}</Text></td>
+                                    <td className="p-4 text-gray-600"><Text variant="span">{c.comuna?.nombre}</Text></td>
+                                    <td className="p-4">
+                                        <div className="flex gap-2">
+                                            <Button
+                                                onClick={() => handleOpenEdit(c)}
+                                                className="text-blue-600 hover:text-blue-800 font-medium text-sm bg-transparent p-0"
+                                            >
+                                                Editar
+                                            </Button>
+                                            <Button
+                                                onClick={() => handleDelete(c.id)}
+                                                className="text-red-600 hover:text-red-800 font-medium text-sm bg-transparent p-0"
+                                            >
+                                                Eliminar
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <CreateModal

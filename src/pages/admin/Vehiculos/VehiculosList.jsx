@@ -109,45 +109,47 @@ const VehiculosList = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
-                <table className="w-full text-left">
-                    <thead className="bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">ID</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Modelo</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Marca</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Año</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Precio</Text></th>
-                            <th className="p-4 font-semibold text-gray-600"><Text variant="span">Acciones</Text></th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {vehiculos.map((vehiculo) => (
-                            <tr key={vehiculo.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="p-4 text-gray-500"><Text variant="span">#{vehiculo.id}</Text></td>
-                                <td className="p-4 font-medium text-gray-900"><Text variant="span">{vehiculo.modelo}</Text></td>
-                                <td className="p-4 text-gray-600"><Text variant="span">{vehiculo.marca?.nombre}</Text></td>
-                                <td className="p-4 text-gray-600"><Text variant="span">{vehiculo.anio}</Text></td>
-                                <td className="p-4 text-gray-600"><Text variant="span">${vehiculo.precio.toLocaleString()}</Text></td>
-                                <td className="p-4">
-                                    <div className="flex gap-2">
-                                        <Button
-                                            onClick={() => handleOpenEdit(vehiculo)}
-                                            className="text-blue-600 hover:text-blue-800 font-medium text-sm bg-transparent p-0"
-                                        >
-                                            Editar
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleDelete(vehiculo.id)}
-                                            className="text-red-600 hover:text-red-800 font-medium text-sm bg-transparent p-0"
-                                        >
-                                            Eliminar
-                                        </Button>
-                                    </div>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">ID</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Modelo</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Marca</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Año</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Precio</Text></th>
+                                <th className="p-4 font-semibold text-gray-600"><Text variant="span">Acciones</Text></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {vehiculos.map((vehiculo) => (
+                                <tr key={vehiculo.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="p-4 text-gray-500"><Text variant="span">#{vehiculo.id}</Text></td>
+                                    <td className="p-4 font-medium text-gray-900"><Text variant="span">{vehiculo.modelo}</Text></td>
+                                    <td className="p-4 text-gray-600"><Text variant="span">{vehiculo.marca?.nombre}</Text></td>
+                                    <td className="p-4 text-gray-600"><Text variant="span">{vehiculo.anio}</Text></td>
+                                    <td className="p-4 text-gray-600"><Text variant="span">${vehiculo.precio.toLocaleString()}</Text></td>
+                                    <td className="p-4">
+                                        <div className="flex gap-2">
+                                            <Button
+                                                onClick={() => handleOpenEdit(vehiculo)}
+                                                className="text-blue-600 hover:text-blue-800 font-medium text-sm bg-transparent p-0"
+                                            >
+                                                Editar
+                                            </Button>
+                                            <Button
+                                                onClick={() => handleDelete(vehiculo.id)}
+                                                className="text-red-600 hover:text-red-800 font-medium text-sm bg-transparent p-0"
+                                            >
+                                                Eliminar
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <CreateModal
