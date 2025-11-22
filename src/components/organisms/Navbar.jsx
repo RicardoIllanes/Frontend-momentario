@@ -36,7 +36,7 @@ function Navbar({ links, title }) {
 						</Text>
 					</div>
 
-					<div className="hidden md:flex space-x-8">
+					<div className="hidden xl:flex space-x-8">
 						{links.map((link, i) => (
 							<NavLink
 								key={i}
@@ -52,7 +52,7 @@ function Navbar({ links, title }) {
 						))}
 					</div>
 
-					<div className="md:hidden">
+					<div className="xl:hidden">
 						<Button
 							onClick={() => setIsOpen(!isOpen)}
 							className="text-gray-300 hover:text-red-500 focus:outline-none transition-colors bg-transparent p-0"
@@ -72,7 +72,7 @@ function Navbar({ links, title }) {
 				</div>
 			</div>
 
-			<div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+			<div className={`xl:hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
 				<div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-sm">
 					{links.map((link, i) => (
 						<NavLink
